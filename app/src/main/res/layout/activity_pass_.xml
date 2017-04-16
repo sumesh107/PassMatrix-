@@ -323,6 +323,14 @@
             android:layout_weight="0.75" />
     </LinearLayout>
 
+    <Button
+        android:onClick="btnclick"
+        android:id="@+id/button2"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:text="ok" />
+
     <!--<Button
         android:id="@+id/button3"
         android:onClick="btn"

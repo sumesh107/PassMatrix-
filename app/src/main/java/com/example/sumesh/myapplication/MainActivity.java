@@ -39,15 +39,18 @@ public class MainActivity extends AppCompatActivity{
    // Button split_image;
     // Button btnGallery;
 
-    ImageView image;
+
     public static Bitmap bit;
+    public static int i;
+    public static int chunkHeight,chunkWidth;
+
     Uri selectedImage;                         //Uniform resource id - address of an image object
     private final int RESULT_LOAD_IMAGE = 1;
     public final int PERMISSIONS_REQUEST_CODE =123;
-    int chunkNumbers = 64;
-    int chunkHeight,chunkWidth;
+    int chunkNumbers = 36;
     ArrayList<Bitmap> chunkedImages;
     ArrayList<Bitmap> finalchunk;
+    ImageView image;
 
     private GestureDetectorCompat mDetector;
 
@@ -110,6 +113,7 @@ public class MainActivity extends AppCompatActivity{
 
                     // Function of split the image(divide the image into pieces)
                     splitImage(image, chunkNumbers);
+
                 }
                 else
                 {
@@ -131,7 +135,7 @@ public class MainActivity extends AppCompatActivity{
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     PERMISSIONS_REQUEST_CODE);
 
-            Log.d("Per","sddssd");
+           // Log.d("Per","sddssd");
             alertDialogForCameraImage();
             //PERMISSIONS_REQUEST_CODE is an
             // app-defined int constant. The callback method gets the
@@ -235,13 +239,13 @@ public class MainActivity extends AppCompatActivity{
 
 
         //create a bitmap of a size which can hold the complete image after merging
-        Bitmap bitmap = Bitmap.createBitmap(chunkWidth * 8, chunkHeight * 8,  Bitmap.Config.ARGB_4444);
+        Bitmap bitmap = Bitmap.createBitmap(chunkWidth * 6, chunkHeight * 6,  Bitmap.Config.ARGB_4444);
 
         //create a canvas for drawing all those small images
         Canvas canvas = new Canvas(bitmap);
         int count = 0;
-        for(int rows = 0; rows < 8; rows++){
-            for(int cols = 0; cols < 8; cols++){
+        for(int rows = 0; rows < 6; rows++){
+            for(int cols = 0; cols < 6; cols++){
                 canvas.drawBitmap(imageChunks.get(count), chunkWidth * cols, chunkHeight * rows, null);
                 count++;
             }
@@ -271,7 +275,6 @@ public class MainActivity extends AppCompatActivity{
 
             Toast.makeText(MainActivity.this, "Gesture Granted", Toast.LENGTH_SHORT)
                     .show();
-            int i;
             int chunkWidth = chunkedImages.get(0).getWidth();
             int chunkHeight = chunkedImages.get(0).getHeight();
 
@@ -279,13 +282,15 @@ public class MainActivity extends AppCompatActivity{
             float X = event.getX();
             float Y = event.getY();
 
-            int row_x = (int) Math.ceil(X / chunkWidth);
-            int col_y = (int) Math.ceil(Y / chunkHeight);
+            int col = (int) (X / chunkWidth);
+            int row = (int) (Y / chunkHeight);
 
-             i = ((row_x))+(col_y*8);             //hardcode !!!
-             Log.d("Width , Hieght :"," :"+chunkWidth+chunkHeight);
-             Log.d("Value","Y= "+Y+" X= "+X);
-              Log.d("chunkis", " value:" + i);
+             i = ((row)*6)+(col);             //hardcode !!!
+
+             Log.d(" Main ","Width:"+chunkWidth+"Hieght"+chunkHeight);
+             Log.d("Main ","Y= "+Y+" X= "+X);
+             Log.d(" Main ", "row "+row+" &col "+col);
+             Log.i(" Main ", " value:" + i);
             /*do {
 
             try {
@@ -319,15 +324,16 @@ public class MainActivity extends AppCompatActivity{
         return Uri.parse(path);
     }*/
 
-    public void findtouch(int i)
+    public void findtouch(int k)
     {
 
-       // Bitmap test = finalchunk.get(i);
+       Bitmap test = finalchunk.get(i);
         //Bitmap test = chunkedImages.get(i)
 
-        Intent intent = new Intent(this,Pass_Activity.class);
-        intent.putExtra("width",chunkWidth);
-        intent.putExtra("hieght",chunkHeight);
+        Intent intent = new Intent(this,Display.class);
+       // intent.putExtra("width",chunkWidth);
+       // intent.putExtra("hieght",chunkHeight);
+        intent.putExtra("split_image",test);
 
         startActivity(intent);
         finish();

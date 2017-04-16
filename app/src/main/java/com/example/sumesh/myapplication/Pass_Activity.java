@@ -11,46 +11,50 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static android.R.id.button1;
+import static android.R.id.button2;
 
 
 public class Pass_Activity extends AppCompatActivity {
 
     private GestureDetectorCompat mDetector;
-    float a , b , c;
-    Rect d;
-
+    Button btn;
     ScrollView scroll;
     TextView t_e , n_e ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_);
 
-
         Intent intent = getIntent();
-        int width = intent.getIntExtra("width", 0);
-        int hieght = intent.getIntExtra("hieght", 0);
+       // int width = intent.getIntExtra("width", 0);
+        //int hieght = intent.getIntExtra("hieght", 0);
 
+        final int width = MainActivity.chunkWidth;
+        final int hieght = MainActivity.chunkHeight;
 
         scroll = (ScrollView) findViewById(R.id.scrollView3);
-
         ImageView img = (ImageView) findViewById(R.id.imageView2);
         img.setImageBitmap(MainActivity.bit);
 
-        mDetector = new GestureDetectorCompat(this, new MyGestureListener());
+
+        /*mDetector = new GestureDetectorCompat(this, new MainActivity.MyGestureListener());
         img.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 mDetector.onTouchEvent(event);
                 return true;
             }
-        });
+        });*/
 
 
         TextView t_a = (TextView) findViewById(R.id.aalpha);
@@ -88,27 +92,69 @@ public class Pass_Activity extends AppCompatActivity {
         n_e.setMinHeight(hieght);
 
 
+        btn = (Button) findViewById(R.id.button2);
 
-       // Log.d("Xpos", " : " +a);
+        n_e.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            public void onGlobalLayout() {
+                n_e.getViewTreeObserver();
+                btn.getViewTreeObserver();
+
+                int[] locations = new int[2];
+                n_e.getLocationOnScreen(locations);
+                int x = locations[0];
+                int y = locations[1];
+                Log.d("x",String.valueOf(x));
+                Log.d("y",String.valueOf(y));
+                Log.d("TAG","double tapping");
+            }
+        });
+
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                n_e.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    public void onGlobalLayout() {
+
+                    }
+                });
+                n_e.getViewTreeObserver();
+                t_e.getViewTreeObserver();
+                btn.getViewTreeObserver();
+
+                int[] locations = new int[2];
+                int[] locations_1 = new int[2];
+                n_e.getLocationOnScreen(locations);
+                int y = locations[1];
+                y = y - 100;
+                t_e.getLocationOnScreen(locations_1);
+                int x = locations_1[0];
+                //Log.d("x",String.valueOf(x));
+                //Log.d("y",String.valueOf(y));
+                int col = (int) (x / width);
+                int row = (int) (y / hieght);
+                int s = (col)+((row)*6);             //hardcode !!!
+
+                Log.d("Scroll Pass ","Y= "+y+" X= "+x);
+                Log.d("Pass ", "row "+row+" &col "+col);
+                Log.d("TAG","but");
+
+                    Intent intent2 = new Intent(view.getContext(),Result.class);
+                    intent2.putExtra("result",s);
+                    startActivity(intent2);
+                    finish();
+
+            }
+        });
     }
 
 
 
-    @Override
+    /*@Override
     public boolean onTouchEvent(MotionEvent event) {
         this.mDetector.onTouchEvent(event);
         // Be sure to call the superclass implementation
         return super.onTouchEvent(event);
-    }
-
-    public void pass(View v)
-    {
-       Log.d("T","clicked");
-       a=v.getY();
-       b = v.getScaleY();
-       c = v.getTop();
-       d= v.getClipBounds();
-
     }
 
     class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -116,13 +162,27 @@ public class Pass_Activity extends AppCompatActivity {
         @Override
         public boolean onDoubleTap(MotionEvent event) {
 
-           Log.d("Ypos", " : "+a);
-            Log.d("Yscale", " : "+b);
-            Log.d("Ytop", " : "+c);
+            n_e.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                public void onGlobalLayout() {
+                    n_e.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+                    int[] locations = new int[2];
+                    n_e.getLocationOnScreen(locations);
+                    int x = locations[0];
+                    int y = locations[1];
+                    Log.d("x",String.valueOf(x));
+                    Log.d("y",String.valueOf(y));
+                    Log.d("TAG","double tapping");
+                }
+            });
+
+            //Log.d("Ypos", " : "+a);
+            //Log.d("Yscale", " : "+b);
+            //Log.d("Ytop", " : "+c);*//**//*
            // Log.d("Yrect", " : "+d.centerX());
            // Log.d("Ypos"," : "+b);
             return true;
         }
 
-    }
+    }*/
 }
