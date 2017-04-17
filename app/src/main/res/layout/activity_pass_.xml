@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
+            android:layout_gravity="bottom"
             android:layout_marginStart="80dp">
 
             <!--<TextView-->
@@ -28,6 +29,12 @@
                 <!--android:layout_height="match_parent"-->
                 <!--android:text="  "-->
                 <!--android:textSize="70dp"/>-->
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/_aa"/>
 
             <TextView
                 android:id="@+id/aalpha"
@@ -188,13 +195,18 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/scrollView3">
+            android:id="@+id/scrollView3"
+            android:scrollbarAlwaysDrawVerticalTrack="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/_0"/>
                 <TextView
                     android:id="@+id/_1"
                     android:layout_width="match_parent"
